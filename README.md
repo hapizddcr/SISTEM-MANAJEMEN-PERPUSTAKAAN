@@ -130,6 +130,7 @@ Field utama:
 * Menggunakan PreparedStatement untuk mencegah SQL Injection.
 
 # Struktur Project
+```
 src/
 │
 ├── admin/
@@ -163,7 +164,7 @@ src/
     ├── PanelFavorit.java
     ├── PanelPeminjamanUser.java
     └── PanelProfil.java
-
+```
 # Keterangan Package
 * admin : Berisi panel yang digunakan oleh admin untuk mengelola data buku, user, peminjaman, dan pengembalian.
 * auth : Berisi form login dan registrasi pengguna.

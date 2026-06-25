@@ -43,6 +43,23 @@ public class PanelPeminjamanAdmin extends javax.swing.JPanel {
         txtStatus.setEditable(false);
 
         txtTanggal.setEditable(false);
+
+        setBackground(java.awt.Color.WHITE);
+
+        java.awt.Font boldLabel = new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12);
+        for (javax.swing.JLabel lb : new javax.swing.JLabel[]{
+            lblCari, lblUser, lblBuku, lblBuku1, lblTanggal
+        }) {
+            lb.setFont(boldLabel);
+        }
+
+        btnCetak.setBackground(new java.awt.Color(52, 152, 219));
+        btnCetak.setForeground(java.awt.Color.WHITE);
+        btnCetak.setFocusPainted(false);
+        btnCetak.setBorderPainted(false);
+        btnCetak.setToolTipText("Cetak bukti peminjaman PDF");
+
+        txtCari.setToolTipText("Cari berdasarkan user, buku, atau status");
     }
     private void loadTable() {
 

@@ -27,6 +27,36 @@ public class PanelDashboardUser extends javax.swing.JPanel {
 
         loadAktivitas();
         txtAktivitas.setEditable(false);
+
+        jPanel2.setBackground(new java.awt.Color(232, 244, 253));
+        jPanel3.setBackground(new java.awt.Color(255, 235, 230));
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 216, 230)));
+        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(230, 200, 195)));
+
+        jPanel2.setToolTipText("Total peminjaman buku Anda");
+        jPanel3.setToolTipText("Total buku favorit Anda");
+
+        loadNotifikasi();
+    }
+
+    private void loadNotifikasi() {
+        try {
+            Connection c = Koneksi.getConnection();
+            String sql = "SELECT COUNT(*) AS total FROM peminjaman WHERE user_id=? AND status='dipinjam' AND tanggal_kembali < NOW()";
+            PreparedStatement p = c.prepareStatement(sql);
+            p.setInt(1, Session.idUser);
+            ResultSet r = p.executeQuery();
+            if(r.next()) {
+                int total = r.getInt("total");
+                if(total > 0) {
+                    jLabel2.setText("\u26A0 " + total + " Buku Terlambat! | Aktivitas Terbaru:");
+                    jLabel2.setForeground(new java.awt.Color(192, 57, 43));
+                }
+            }
+        } catch(Exception e) {
+            // ignore
+        }
     }
     // =====================================
     // LOAD STATISTIK

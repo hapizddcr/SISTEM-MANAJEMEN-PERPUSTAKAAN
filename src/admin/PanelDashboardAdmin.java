@@ -25,6 +25,41 @@ public class PanelDashboardAdmin extends javax.swing.JPanel {
 
         loadAktivitas();
         txtAktivitas.setEditable(false);
+
+        panelTotalBuku.setBackground(new java.awt.Color(232, 244, 253));
+        panelTotalUser.setBackground(new java.awt.Color(234, 250, 241));
+        panelTotalUser1.setBackground(new java.awt.Color(254, 249, 231));
+        panelTotalBuku1.setBackground(new java.awt.Color(245, 235, 252));
+
+        panelTotalBuku.setToolTipText("Total keseluruhan buku");
+        panelTotalUser.setToolTipText("Total keseluruhan user");
+        panelTotalUser1.setToolTipText("Total peminjaman yang sedang berlangsung");
+        panelTotalBuku1.setToolTipText("Total buku yang sudah dikembalikan");
+
+        panelTotalBuku.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 216, 230)));
+        panelTotalUser.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 220, 210)));
+        panelTotalUser1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(230, 220, 200)));
+        panelTotalBuku1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(220, 210, 230)));
+
+        loadNotifikasi();
+    }
+
+    private void loadNotifikasi() {
+        try {
+            Connection c = Koneksi.getConnection();
+            String sql = "SELECT COUNT(*) AS total FROM peminjaman WHERE status='dipinjam' AND tanggal_kembali < NOW()";
+            PreparedStatement p = c.prepareStatement(sql);
+            ResultSet r = p.executeQuery();
+            if(r.next()) {
+                int total = r.getInt("total");
+                if(total > 0) {
+                    jLabel5.setText("\u26A0 " + total + " Buku Terlambat! | Aktivitas Terbaru:");
+                    jLabel5.setForeground(new java.awt.Color(192, 57, 43));
+                }
+            }
+        } catch(Exception e) {
+            // ignore
+        }
     }
     // =====================================
     // LOAD STATISTIK
@@ -157,13 +192,24 @@ public class PanelDashboardAdmin extends javax.swing.JPanel {
             txtAktivitas.setText("");
 
             while(r.next()) {
+                String status = r.getString("status");
+
+            switch (status) {
+                case "dipinjam":
+                    status = "meminjam";
+                    break;
+                case "dikembalikan":
+                    status = "mengembalikan";
+                    break;
+            }
+
 
                 txtAktivitas.append(
 
                         r.getString("nama_lengkap")
                         + " - "
 
-                        + r.getString("status")
+                        + status
                         + " buku "
 
                         + r.getString("judul")
@@ -207,6 +253,7 @@ public class PanelDashboardAdmin extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
 
         panelTotalBuku.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        panelTotalBuku.setPreferredSize(new java.awt.Dimension(150, 111));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -223,7 +270,7 @@ public class PanelDashboardAdmin extends javax.swing.JPanel {
             .addGroup(panelTotalBukuLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelTotalBukuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
                     .addComponent(lblTotalBuku, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -238,6 +285,7 @@ public class PanelDashboardAdmin extends javax.swing.JPanel {
         );
 
         panelTotalUser.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        panelTotalUser.setPreferredSize(new java.awt.Dimension(150, 111));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -254,7 +302,7 @@ public class PanelDashboardAdmin extends javax.swing.JPanel {
             .addGroup(panelTotalUserLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelTotalUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
                     .addComponent(lblTotalUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -269,10 +317,11 @@ public class PanelDashboardAdmin extends javax.swing.JPanel {
         );
 
         panelTotalUser1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        panelTotalUser1.setPreferredSize(new java.awt.Dimension(165, 111));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Total Pengembalian");
+        jLabel3.setText("Total Peminjaman");
 
         lblTotalPinjam.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblTotalPinjam.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -284,10 +333,9 @@ public class PanelDashboardAdmin extends javax.swing.JPanel {
             panelTotalUser1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelTotalUser1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelTotalUser1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblTotalPinjam, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addComponent(lblTotalPinjam, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panelTotalUser1Layout.setVerticalGroup(
             panelTotalUser1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -300,10 +348,11 @@ public class PanelDashboardAdmin extends javax.swing.JPanel {
         );
 
         panelTotalBuku1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        panelTotalBuku1.setPreferredSize(new java.awt.Dimension(160, 111));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Total Peminjaman");
+        jLabel4.setText("Total Pengembalian");
 
         lblTotalKembali.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblTotalKembali.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -316,7 +365,7 @@ public class PanelDashboardAdmin extends javax.swing.JPanel {
             .addGroup(panelTotalBuku1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelTotalBuku1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
                     .addComponent(lblTotalKembali, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -342,46 +391,35 @@ public class PanelDashboardAdmin extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
                             .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
                                 .addComponent(panelTotalBuku, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(panelTotalUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(177, 177, 177)
-                                .addComponent(panelTotalUser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(panelTotalBuku1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1)))
+                                .addComponent(panelTotalUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(panelTotalBuku1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(panelTotalUser1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel5)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(panelTotalUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panelTotalUser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(panelTotalBuku, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panelTotalBuku1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(panelTotalUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelTotalUser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelTotalBuku1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelTotalBuku, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(jLabel5)
-                .addGap(10, 10, 10)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );

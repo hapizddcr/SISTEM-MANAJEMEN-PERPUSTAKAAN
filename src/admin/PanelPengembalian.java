@@ -64,6 +64,29 @@ public class PanelPengembalian extends javax.swing.JPanel {
         Object.class,
         null
         );
+
+        setBackground(java.awt.Color.WHITE);
+
+        java.awt.Font boldLabel = new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12);
+        for (javax.swing.JLabel lb : new javax.swing.JLabel[]{
+            lblCari, lblUser, lblBuku, lblTanggal, lblTerlambat, lblDenda, jLabel1
+        }) {
+            lb.setFont(boldLabel);
+        }
+
+        btnProses.setBackground(new java.awt.Color(46, 204, 113));
+        btnProses.setForeground(java.awt.Color.WHITE);
+        btnProses.setFocusPainted(false);
+        btnProses.setBorderPainted(false);
+        btnProses.setToolTipText("Proses pengembalian buku");
+
+        btnCetak.setBackground(new java.awt.Color(52, 152, 219));
+        btnCetak.setForeground(java.awt.Color.WHITE);
+        btnCetak.setFocusPainted(false);
+        btnCetak.setBorderPainted(false);
+        btnCetak.setToolTipText("Cetak bukti pengembalian PDF");
+
+        txtCari.setToolTipText("Cari berdasarkan user atau buku");
     }
      // =====================================
     // LOAD TABLE

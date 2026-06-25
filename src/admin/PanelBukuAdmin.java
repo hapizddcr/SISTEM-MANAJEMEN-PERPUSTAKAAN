@@ -28,7 +28,41 @@ public class PanelBukuAdmin extends javax.swing.JPanel {
         btnEdit.setEnabled(false);
 
         btnHapus.setEnabled(false);
-        
+
+        setBackground(java.awt.Color.WHITE);
+
+        java.awt.Font boldLabel = new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12);
+        for (javax.swing.JLabel lb : new javax.swing.JLabel[]{
+            lblCari, lblJudul, lblPengarang, lblPenerbit, lblTahun, lblStok
+        }) {
+            lb.setFont(boldLabel);
+        }
+
+        btnTambah.setBackground(new java.awt.Color(52, 152, 219));
+        btnTambah.setForeground(java.awt.Color.WHITE);
+        btnTambah.setFocusPainted(false);
+        btnTambah.setBorderPainted(false);
+        btnTambah.setToolTipText("Tambah data buku baru");
+
+        btnEdit.setBackground(new java.awt.Color(243, 156, 18));
+        btnEdit.setForeground(java.awt.Color.WHITE);
+        btnEdit.setFocusPainted(false);
+        btnEdit.setBorderPainted(false);
+        btnEdit.setToolTipText("Edit data buku terpilih");
+
+        btnHapus.setBackground(new java.awt.Color(231, 76, 60));
+        btnHapus.setForeground(java.awt.Color.WHITE);
+        btnHapus.setFocusPainted(false);
+        btnHapus.setBorderPainted(false);
+        btnHapus.setToolTipText("Hapus data buku terpilih");
+
+        btnReset.setBackground(new java.awt.Color(149, 165, 166));
+        btnReset.setForeground(java.awt.Color.WHITE);
+        btnReset.setFocusPainted(false);
+        btnReset.setBorderPainted(false);
+        btnReset.setToolTipText("Reset form");
+
+        txtCari.setToolTipText("Cari berdasarkan judul, pengarang, atau penerbit");
     }
     // =====================================
     // LOAD TABLE

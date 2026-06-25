@@ -31,6 +31,23 @@ public class PanelFavorit extends javax.swing.JPanel {
         txtPengarang.setEditable(false);
 
         txtPenerbit.setEditable(false);
+
+        setBackground(java.awt.Color.WHITE);
+
+        java.awt.Font boldLabel = new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12);
+        for (javax.swing.JLabel lb : new javax.swing.JLabel[]{
+            lblCari, lblJudul, lblPengarang, lblPenerbit
+        }) {
+            lb.setFont(boldLabel);
+        }
+
+        btnHapus.setBackground(new java.awt.Color(231, 76, 60));
+        btnHapus.setForeground(java.awt.Color.WHITE);
+        btnHapus.setFocusPainted(false);
+        btnHapus.setBorderPainted(false);
+        btnHapus.setToolTipText("Hapus dari daftar favorit");
+
+        txtCari.setToolTipText("Cari berdasarkan judul, pengarang, atau penerbit");
     }
     // =====================================
     // LOAD TABLE

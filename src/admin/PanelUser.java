@@ -30,6 +30,42 @@ public class PanelUser extends javax.swing.JPanel {
         btnEdit.setEnabled(false);
 
         btnDelete.setEnabled(false);
+
+        setBackground(java.awt.Color.WHITE);
+
+        java.awt.Font boldLabel = new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12);
+        for (javax.swing.JLabel lb : new javax.swing.JLabel[]{
+            lblCari, lblNamaLengkap, lblUser, lblPassword,
+            lblNoHp, lblAlamat, lblRole, lblStatus
+        }) {
+            lb.setFont(boldLabel);
+        }
+
+        btnTambah.setBackground(new java.awt.Color(52, 152, 219));
+        btnTambah.setForeground(java.awt.Color.WHITE);
+        btnTambah.setFocusPainted(false);
+        btnTambah.setBorderPainted(false);
+        btnTambah.setToolTipText("Tambah user baru");
+
+        btnEdit.setBackground(new java.awt.Color(243, 156, 18));
+        btnEdit.setForeground(java.awt.Color.WHITE);
+        btnEdit.setFocusPainted(false);
+        btnEdit.setBorderPainted(false);
+        btnEdit.setToolTipText("Edit data user terpilih");
+
+        btnDelete.setBackground(new java.awt.Color(231, 76, 60));
+        btnDelete.setForeground(java.awt.Color.WHITE);
+        btnDelete.setFocusPainted(false);
+        btnDelete.setBorderPainted(false);
+        btnDelete.setToolTipText("Hapus user terpilih");
+
+        btnReset.setBackground(new java.awt.Color(149, 165, 166));
+        btnReset.setForeground(java.awt.Color.WHITE);
+        btnReset.setFocusPainted(false);
+        btnReset.setBorderPainted(false);
+        btnReset.setToolTipText("Reset form");
+
+        txtCari.setToolTipText("Cari berdasarkan nama atau username");
     }
     // =====================================
     // LOAD TABLE
@@ -205,9 +241,9 @@ public class PanelUser extends javax.swing.JPanel {
 
         txtAlamat.setText("");
 
-        cbRole.setSelectedIndex(0);
+        cbRole.setSelectedIndex(-1);
 
-        cbStatus.setSelectedIndex(0);
+        cbStatus.setSelectedIndex(-1);
 
         tableUser.clearSelection();
 
@@ -765,6 +801,32 @@ public class PanelUser extends javax.swing.JPanel {
                     null,
                     "User berhasil diupdate"
             );
+
+            int reset = JOptionPane.showConfirmDialog(
+                    null,
+                    "Reset password user ini?",
+                    "Reset Password",
+                    JOptionPane.YES_NO_OPTION
+            );
+
+            if(reset == JOptionPane.YES_OPTION) {
+                String passBaru = JOptionPane.showInputDialog(
+                        null,
+                        "Masukkan password baru:",
+                        "Reset Password",
+                        JOptionPane.PLAIN_MESSAGE
+                );
+
+                if(passBaru != null && !passBaru.trim().isEmpty()) {
+                    String hash = BCrypt.hashpw(passBaru, BCrypt.gensalt());
+                    String sqlPass = "UPDATE users SET password=? WHERE id=?";
+                    PreparedStatement pPass = c.prepareStatement(sqlPass);
+                    pPass.setString(1, hash);
+                    pPass.setString(2, id);
+                    pPass.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Password berhasil direset");
+                }
+            }
 
             loadTable();
 

@@ -32,6 +32,28 @@ public class PanelProfil extends javax.swing.JPanel {
         txtPasswordLama.setEchoChar('*');
 
         txtPasswordBaru.setEchoChar('*');
+
+        setBackground(java.awt.Color.WHITE);
+
+        java.awt.Font boldLabel = new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12);
+        for (javax.swing.JLabel lb : new javax.swing.JLabel[]{
+            lblNamaLengkap, lblUsername, lblNoHp, lblAlamat,
+            lblPasswordLama, lblPasswordBaru
+        }) {
+            lb.setFont(boldLabel);
+        }
+
+        btnSimpan.setBackground(new java.awt.Color(52, 152, 219));
+        btnSimpan.setForeground(java.awt.Color.WHITE);
+        btnSimpan.setFocusPainted(false);
+        btnSimpan.setBorderPainted(false);
+        btnSimpan.setToolTipText("Simpan perubahan profil");
+
+        btnPassword.setBackground(new java.awt.Color(52, 152, 219));
+        btnPassword.setForeground(java.awt.Color.WHITE);
+        btnPassword.setFocusPainted(false);
+        btnPassword.setBorderPainted(false);
+        btnPassword.setToolTipText("Ganti password");
     }
     private void loadProfil() {
 

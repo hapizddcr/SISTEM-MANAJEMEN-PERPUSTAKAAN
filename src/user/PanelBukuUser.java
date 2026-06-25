@@ -42,6 +42,29 @@ public class PanelBukuUser extends javax.swing.JPanel {
         btnPinjam.setEnabled(false);
 
         btnFavorit.setEnabled(false);
+
+        setBackground(java.awt.Color.WHITE);
+
+        java.awt.Font boldLabel = new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12);
+        for (javax.swing.JLabel lb : new javax.swing.JLabel[]{
+            lblCari, lblJudul, lblPengarang, lblPenerbit, lblTahun, lblStok
+        }) {
+            lb.setFont(boldLabel);
+        }
+
+        btnPinjam.setBackground(new java.awt.Color(46, 204, 113));
+        btnPinjam.setForeground(java.awt.Color.WHITE);
+        btnPinjam.setFocusPainted(false);
+        btnPinjam.setBorderPainted(false);
+        btnPinjam.setToolTipText("Pinjam buku terpilih");
+
+        btnFavorit.setBackground(new java.awt.Color(243, 156, 18));
+        btnFavorit.setForeground(java.awt.Color.WHITE);
+        btnFavorit.setFocusPainted(false);
+        btnFavorit.setBorderPainted(false);
+        btnFavorit.setToolTipText("Tambah ke favorit");
+
+        txtCari.setToolTipText("Cari berdasarkan judul, pengarang, atau penerbit");
     }
     // =====================================
     // LOAD TABLE

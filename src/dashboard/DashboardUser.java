@@ -15,6 +15,8 @@ import user.PanelDashboardUser;
 import user.PanelFavorit;
 import user.PanelPeminjamanUser;
 import user.PanelProfil;
+import java.awt.Dimension;
+import java.awt.Font;
 /**
  *
  * @author hapiz
@@ -28,8 +30,36 @@ public class DashboardUser extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
 
-        setExtendedState(MAXIMIZED_BOTH);
+        btnDashboard.setText("Dashboard");
+        btnBuku.setText("Buku");
+        btnPeminjaman.setText("Peminjaman");
+        btnFavorit.setText("Favorit");
+        btnProfil.setText("Profil");
+        btnLogout.setText("Logout");
 
+        btnDashboard.setToolTipText("Dashboard utama");
+        btnBuku.setToolTipText("Cari dan pinjam buku");
+        btnPeminjaman.setToolTipText("Lihat riwayat peminjaman");
+        btnFavorit.setToolTipText("Daftar buku favorit");
+        btnProfil.setToolTipText("Edit profil");
+        btnLogout.setToolTipText("Keluar dari sistem");
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                int pilih = JOptionPane.showConfirmDialog(
+                    null,
+                    "Yakin ingin keluar?",
+                    "Konfirmasi Keluar",
+                    JOptionPane.YES_NO_OPTION
+                );
+                if(pilih == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+                }
+            }
+        });
+
+        setMinimumSize(new Dimension(800, 600));
 
         lblNama.setText(
                 "Selamat Datang, "
@@ -39,9 +69,77 @@ public class DashboardUser extends javax.swing.JFrame {
                 + Session.namaLengkap
         );
 
+        panelHeader.setBackground(new java.awt.Color(52, 73, 94));
+        lblTitle.setForeground(java.awt.Color.WHITE);
+        lblNama.setForeground(java.awt.Color.WHITE);
+
+        panelSidebar.setBackground(new java.awt.Color(44, 62, 80));
+        jScrollPane2.setBackground(new java.awt.Color(44, 62, 80));
+        jScrollPane2.getViewport().setBackground(new java.awt.Color(44, 62, 80));
+
+        java.awt.Color inactiveBg = new java.awt.Color(44, 62, 80);
+        java.awt.Color inactiveFg = java.awt.Color.WHITE;
+        java.awt.Color activeBg = new java.awt.Color(41, 128, 185);
+
+        for (javax.swing.JButton btn : new javax.swing.JButton[]{
+            btnDashboard, btnBuku, btnPeminjaman,
+            btnFavorit, btnProfil, btnLogout
+        }) {
+            btn.setOpaque(true);
+            btn.setBorderPainted(false);
+            btn.setFocusPainted(false);
+            btn.setBackground(inactiveBg);
+            btn.setForeground(inactiveFg);
+            if (btn == btnLogout) {
+                btn.setBackground(new java.awt.Color(192, 57, 43));
+            }
+        }
+
+        // SIDEBAR
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(180, 0));
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        // HEADER
+        panelHeader.setPreferredSize(new java.awt.Dimension(0, 65));
+        lblTitle.setFont(lblTitle.getFont().deriveFont(Font.BOLD, 20));
+        lblNama.setFont(lblNama.getFont().deriveFont(Font.PLAIN, 14));
+        lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+
+        // BUTTON HEIGHT
+        java.awt.Dimension btnSize = new java.awt.Dimension(0, 36);
+        for (javax.swing.JButton btn : new javax.swing.JButton[]{
+            btnDashboard, btnBuku, btnPeminjaman,
+            btnFavorit, btnProfil, btnLogout
+        }) {
+            btn.setPreferredSize(btnSize);
+        }
+
+        // CONTENT
+        panelContent.setBackground(java.awt.Color.WHITE);
+
+        setActiveButton(btnDashboard);
+
         loadPanel(
                 new PanelDashboardUser()
         );
+    }
+
+    private void setActiveButton(javax.swing.JButton active) {
+        java.awt.Color inactiveBg = new java.awt.Color(44, 62, 80);
+        java.awt.Color activeBg = new java.awt.Color(41, 128, 185);
+        for (javax.swing.JButton btn : new javax.swing.JButton[]{
+            btnDashboard, btnBuku, btnPeminjaman,
+            btnFavorit, btnProfil, btnLogout
+        }) {
+            btn.setBackground(btn == active ? activeBg : inactiveBg);
+        }
+    }
+    @Override
+    public void setVisible(boolean visible) {
+        if (visible) {
+            setExtendedState(MAXIMIZED_BOTH);
+        }
+        super.setVisible(visible);
     }
     public void loadPanel(JPanel panel) {
 
@@ -219,6 +317,7 @@ public class DashboardUser extends javax.swing.JFrame {
 
     private void btnDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDashboardActionPerformed
         // TODO add your handling code here:
+        setActiveButton(btnDashboard);
         loadPanel(
             new PanelDashboardUser()
         );
@@ -226,6 +325,7 @@ public class DashboardUser extends javax.swing.JFrame {
 
     private void btnBukuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBukuActionPerformed
         // TODO add your handling code here:
+        setActiveButton(btnBuku);
         loadPanel(
             new PanelBukuUser()
         );
@@ -233,6 +333,7 @@ public class DashboardUser extends javax.swing.JFrame {
 
     private void btnPeminjamanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPeminjamanActionPerformed
         // TODO add your handling code here:
+        setActiveButton(btnPeminjaman);
         loadPanel(
             new PanelPeminjamanUser()
         );
@@ -240,13 +341,23 @@ public class DashboardUser extends javax.swing.JFrame {
 
     private void btnProfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProfilActionPerformed
         // TODO add your handling code here:
+        setActiveButton(btnProfil);
         loadPanel(
             new PanelProfil()
         );
     }//GEN-LAST:event_btnProfilActionPerformed
 
+    private void btnFavoritActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFavoritActionPerformed
+        // TODO add your handling code here:
+        setActiveButton(btnFavorit);
+        loadPanel(
+                new PanelFavorit()
+        );
+    }//GEN-LAST:event_btnFavoritActionPerformed
+
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         // TODO add your handling code here:
+        setActiveButton(btnLogout);
         int pilih =
         JOptionPane.showConfirmDialog(
             null,
@@ -268,13 +379,6 @@ public class DashboardUser extends javax.swing.JFrame {
             new Login().setVisible(true);
         }
     }//GEN-LAST:event_btnLogoutActionPerformed
-
-    private void btnFavoritActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFavoritActionPerformed
-        // TODO add your handling code here:
-        loadPanel(
-                new PanelFavorit()
-        );
-    }//GEN-LAST:event_btnFavoritActionPerformed
 
     /**
      * @param args the command line arguments

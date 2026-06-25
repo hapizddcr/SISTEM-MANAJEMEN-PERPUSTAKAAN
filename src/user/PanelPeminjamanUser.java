@@ -31,6 +31,17 @@ public class PanelPeminjamanUser extends javax.swing.JPanel {
         txtStatus.setEditable(false);
 
         txtTanggal.setEditable(false);
+
+        setBackground(java.awt.Color.WHITE);
+
+        java.awt.Font boldLabel = new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12);
+        for (javax.swing.JLabel lb : new javax.swing.JLabel[]{
+            lblCari, lblBuku, lblStatus, lblTanggal
+        }) {
+            lb.setFont(boldLabel);
+        }
+
+        txtCari.setToolTipText("Cari berdasarkan judul buku atau status");
     }
     // =====================================
     // LOAD TABLE

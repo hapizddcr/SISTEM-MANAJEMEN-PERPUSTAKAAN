@@ -4,6 +4,7 @@
  */
 package auth;
 import config.Koneksi;
+import java.awt.Font;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,6 +23,42 @@ public class Register extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setResizable(false);
+        setTitle("Register - Perpustakaan");
+        setMinimumSize(new java.awt.Dimension(500, 600));
+
+        getContentPane().setBackground(java.awt.Color.WHITE);
+
+        jLabel1.setForeground(new java.awt.Color(44, 62, 80));
+        jLabel1.setFont(jLabel1.getFont().deriveFont(Font.BOLD, 36));
+
+        java.awt.Font boldLabel = new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12);
+        for (javax.swing.JLabel lb : new javax.swing.JLabel[]{
+            LblNama, LblUsername, LblPassword, LblPassword1,
+            LblEmail, LblEmail1, LblAlamat
+        }) {
+            lb.setFont(boldLabel);
+        }
+
+        btnRegister.setBackground(new java.awt.Color(41, 128, 185));
+        btnRegister.setForeground(java.awt.Color.WHITE);
+        btnRegister.setFont(btnRegister.getFont().deriveFont(Font.BOLD, 18));
+        btnRegister.setFocusPainted(false);
+        btnRegister.setBorderPainted(false);
+
+        txtKembali.setBackground(new java.awt.Color(149, 165, 166));
+        txtKembali.setForeground(java.awt.Color.WHITE);
+        txtKembali.setFocusPainted(false);
+        txtKembali.setBorderPainted(false);
+        txtKembali.setToolTipText("Kembali ke halaman login");
+
+        txtNama.setToolTipText("Masukkan nama lengkap");
+        txtUsername.setToolTipText("Buat username (minimal 4 karakter)");
+        txtPassword.setToolTipText("Buat password (minimal 6 karakter, harus ada huruf dan angka)");
+        txtKonfirmasi.setToolTipText("Ulangi password yang sama");
+        txtEmail.setToolTipText("Masukkan alamat email yang valid");
+        txtNoHP.setToolTipText("Masukkan nomor HP (mulai dengan 08)");
+        txtAlamat.setToolTipText("Masukkan alamat lengkap");
+        btnRegister.setToolTipText("Daftarkan akun baru");
     }
 
     /**
@@ -74,14 +111,13 @@ public class Register extends javax.swing.JFrame {
         txtAlamat.setRows(5);
         jScrollPane1.setViewportView(txtAlamat);
 
-        cbShowPassword.setText("ShowPassword");
+        cbShowPassword.setText("Show Password");
         cbShowPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbShowPasswordActionPerformed(evt);
             }
         });
 
-        btnRegister.setBackground(new java.awt.Color(174, 214, 241));
         btnRegister.setText("Register");
         btnRegister.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

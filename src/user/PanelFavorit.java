@@ -32,6 +32,8 @@ public class PanelFavorit extends javax.swing.JPanel {
 
         txtPenerbit.setEditable(false);
 
+        txtStok.setEditable(false);
+
         setBackground(java.awt.Color.WHITE);
 
         java.awt.Font boldLabel = new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12);
@@ -73,6 +75,8 @@ public class PanelFavorit extends javax.swing.JPanel {
         model.addColumn("Pengarang");
         model.addColumn("Penerbit");
         model.addColumn("Tahun");
+        model.addColumn("Stok");
+        model.addColumn("Status");
 
         try {
 
@@ -84,7 +88,8 @@ public class PanelFavorit extends javax.swing.JPanel {
                     + "b.judul, "
                     + "b.pengarang, "
                     + "b.penerbit, "
-                    + "b.tahun "
+                    + "b.tahun, "
+                    + "b.stok "
                     + "FROM favorit f "
                     + "JOIN buku b "
                     + "ON f.buku_id=b.id "
@@ -102,7 +107,13 @@ public class PanelFavorit extends javax.swing.JPanel {
                     p.executeQuery();
 
             while(r.next()) {
+                 String status;
 
+                if (r.getInt("stok") > 0) {
+                    status = "Tersedia";
+                } else {
+                    status = "Habis";
+                }
                 model.addRow(new Object[] {
 
                     r.getString("id"),
@@ -113,7 +124,10 @@ public class PanelFavorit extends javax.swing.JPanel {
 
                     r.getString("penerbit"),
 
-                    r.getString("tahun")
+                    r.getString("tahun"),
+
+                    r.getString("stok"),
+                    status
                 });
             }
 
@@ -152,6 +166,8 @@ public class PanelFavorit extends javax.swing.JPanel {
         model.addColumn("Pengarang");
         model.addColumn("Penerbit");
         model.addColumn("Tahun");
+        model.addColumn("Stok");
+        model.addColumn("Status");
 
         try {
 
@@ -163,10 +179,12 @@ public class PanelFavorit extends javax.swing.JPanel {
 
             String sql =
                     "SELECT f.id, "
+                    + "b.id AS buku_id, "
                     + "b.judul, "
                     + "b.pengarang, "
                     + "b.penerbit, "
-                    + "b.tahun "
+                    + "b.tahun, "
+                    + "b.stok "
                     + "FROM favorit f "
                     + "JOIN buku b "
                     + "ON f.buku_id=b.id "
@@ -204,7 +222,13 @@ public class PanelFavorit extends javax.swing.JPanel {
                     p.executeQuery();
 
             while(r.next()) {
+                String status;
 
+                if (r.getInt("stok") > 0) {
+                    status = "Tersedia";
+                } else {
+                    status = "Habis";
+                }
                 model.addRow(new Object[] {
 
                     r.getString("id"),
@@ -215,7 +239,10 @@ public class PanelFavorit extends javax.swing.JPanel {
 
                     r.getString("penerbit"),
 
-                    r.getString("tahun")
+                    r.getString("tahun"),
+
+                    r.getString("stok"),
+                    status
                 });
             }
 
@@ -249,6 +276,9 @@ public class PanelFavorit extends javax.swing.JPanel {
         btnHapus = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableFavorit = new javax.swing.JTable();
+        txtStok = new javax.swing.JTextField();
+        lblPenerbit1 = new javax.swing.JLabel();
+        btnPinjam = new javax.swing.JButton();
 
         lblCari.setText("Cari Favorit: ");
 
@@ -295,30 +325,49 @@ public class PanelFavorit extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(tableFavorit);
 
+        txtStok.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtStokActionPerformed(evt);
+            }
+        });
+
+        lblPenerbit1.setText("Stok:");
+
+        btnPinjam.setText("Pinjam");
+        btnPinjam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPinjamActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblCari)
                             .addComponent(lblJudul)
                             .addComponent(lblPengarang)
-                            .addComponent(lblPenerbit))
+                            .addComponent(lblPenerbit)
+                            .addComponent(lblPenerbit1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnHapus)
-                                .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(txtCari)
                             .addComponent(txtJudul)
                             .addComponent(txtPengarang, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
-                            .addComponent(txtPenerbit, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE))))
-                .addContainerGap())
+                            .addComponent(txtPenerbit)
+                            .addComponent(txtStok)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnPinjam)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnHapus)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -339,11 +388,17 @@ public class PanelFavorit extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtPenerbit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblPenerbit))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnHapus)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPenerbit1)
+                    .addComponent(txtStok, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnPinjam)
+                    .addComponent(btnHapus))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -368,6 +423,11 @@ public class PanelFavorit extends javax.swing.JPanel {
 
         txtPenerbit.setText(
                 tableFavorit.getValueAt(baris, 3)
+                .toString()
+        );
+
+        txtStok.setText(
+                tableFavorit.getValueAt(baris, 5)
                 .toString()
         );
     }//GEN-LAST:event_tableFavoritMouseClicked
@@ -433,6 +493,8 @@ public class PanelFavorit extends javax.swing.JPanel {
 
             txtPenerbit.setText("");
 
+            txtStok.setText("");
+
         } catch(Exception e) {
 
             JOptionPane.showMessageDialog(
@@ -447,18 +509,175 @@ public class PanelFavorit extends javax.swing.JPanel {
         cariData();
     }//GEN-LAST:event_txtCariKeyReleased
 
+    private void txtStokActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStokActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtStokActionPerformed
+
+    private void btnPinjamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPinjamActionPerformed
+        // TODO add your handling code here:
+         try {
+
+        int baris = tableFavorit.getSelectedRow();
+
+        if (baris == -1) {
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Pilih buku terlebih dahulu!"
+            );
+
+            return;
+        }
+
+        int stok = Integer.parseInt(
+                tableFavorit.getValueAt(baris, 5).toString()
+        );
+
+        if (stok <= 0) {
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Maaf, stok buku habis."
+            );
+
+            return;
+        }
+
+        String idFavorit =
+                tableFavorit.getValueAt(baris, 0).toString();
+
+        Connection c =
+                Koneksi.getConnection();
+
+        // ===============================
+        // Ambil buku_id dari tabel favorit
+        // ===============================
+
+        String sqlFavorit =
+                "SELECT buku_id "
+                + "FROM favorit "
+                + "WHERE id=?";
+
+        PreparedStatement pFavorit =
+                c.prepareStatement(sqlFavorit);
+
+        pFavorit.setString(1, idFavorit);
+
+        ResultSet r =
+                pFavorit.executeQuery();
+
+        if (!r.next()) {
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Data favorit tidak ditemukan."
+            );
+
+            return;
+        }
+
+        int bukuId = r.getInt("buku_id");
+
+        // ===============================
+        // Simpan ke tabel peminjaman
+        // ===============================
+
+        String sqlPinjam =
+                "INSERT INTO peminjaman"
+                + "(user_id,tanggal_pinjam,tanggal_kembali,status)"
+                + "VALUES(?,NOW(),DATE_ADD(NOW(),INTERVAL 7 DAY),'dipinjam')";
+
+        PreparedStatement pPinjam =
+                c.prepareStatement(
+                        sqlPinjam,
+                        PreparedStatement.RETURN_GENERATED_KEYS
+                );
+
+        pPinjam.setInt(
+                1,
+                Session.idUser
+        );
+
+        pPinjam.executeUpdate();
+
+        ResultSet rsId =
+                pPinjam.getGeneratedKeys();
+
+        rsId.next();
+
+        int idPeminjaman =
+                rsId.getInt(1);
+
+        // ===============================
+        // Simpan detail peminjaman
+        // ===============================
+
+        String sqlDetail =
+                "INSERT INTO detail_peminjaman"
+                + "(peminjaman_id,buku_id)"
+                + "VALUES(?,?)";
+
+        PreparedStatement pDetail =
+                c.prepareStatement(sqlDetail);
+
+        pDetail.setInt(1, idPeminjaman);
+        pDetail.setInt(2, bukuId);
+
+        pDetail.executeUpdate();
+
+        // ===============================
+        // Kurangi stok buku
+        // ===============================
+
+        String sqlStok =
+                "UPDATE buku "
+                + "SET stok=stok-1 "
+                + "WHERE id=?";
+
+        PreparedStatement pStok =
+                c.prepareStatement(sqlStok);
+
+        pStok.setInt(1, bukuId);
+
+        pStok.executeUpdate();
+
+        JOptionPane.showMessageDialog(
+                null,
+                "Buku berhasil dipinjam."
+        );
+
+        loadTable();
+        txtJudul.setText("");
+
+        txtPengarang.setText("");
+
+        txtPenerbit.setText("");
+
+        txtStok.setText("");
+    } catch (Exception e) {
+
+        JOptionPane.showMessageDialog(
+                null,
+                e.getMessage()
+        );
+    }
+    }//GEN-LAST:event_btnPinjamActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnHapus;
+    private javax.swing.JButton btnPinjam;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCari;
     private javax.swing.JLabel lblJudul;
     private javax.swing.JLabel lblPenerbit;
+    private javax.swing.JLabel lblPenerbit1;
     private javax.swing.JLabel lblPengarang;
     private javax.swing.JTable tableFavorit;
     private javax.swing.JTextField txtCari;
     private javax.swing.JTextField txtJudul;
     private javax.swing.JTextField txtPenerbit;
     private javax.swing.JTextField txtPengarang;
+    private javax.swing.JTextField txtStok;
     // End of variables declaration//GEN-END:variables
 }
